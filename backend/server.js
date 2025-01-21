@@ -16,6 +16,12 @@ const workoutRoutes = require("./routes/workouts");
 // Set up the express app
 const app = express();
 
+// Require cors
+const cors = require("cors");
+
+// allow request from all origins (for development only)
+app.use(cors()); 
+
 // Middleware:
 // any code that executes between us getting a request on the server
 // and us sending a response back to the client
