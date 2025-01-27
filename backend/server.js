@@ -1,7 +1,7 @@
 import 'dotenv/config'; // Load environment variables
 import express from 'express';
 import mongoose from 'mongoose';
-import workoutRoutes from './routes/workouts.js'; // Ensure to include the .js extension
+import workoutRoutes from './routes/workouts.js';
 
 // Express app
 const app = express();
