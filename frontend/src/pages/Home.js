@@ -1,20 +1,25 @@
-import { useEffect } from "react"
-import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
-
-// components
-import WorkoutDetails from "../components/WorkoutDetails"
-import WorkoutForm from "../components/WorkoutForm"
+import React, { useEffect } from 'react'
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import WorkoutForm from '../components/WorkoutForm'
+import WorkoutsList from '../components/WorkoutsList'
 
 const Home = () => {
-  const { workouts, dispatch } = useWorkoutsContext()
+  const { dispatch } = useWorkoutsContext()
 
   useEffect(() => {
     const fetchWorkouts = async () => {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/workouts`)
-      const json = await response.json()
+      try {
+        const response = await fetch('/api/workouts')
+        if (!response.ok) {
+          throw new Error('Failed to fetch workouts')
+        }
 
-      if (response.ok) {
-        dispatch({type: 'SET_WORKOUTS', payload: json})
+        const json = await response.json()
+
+        // Dispatch the workouts to the context
+        dispatch({ type: 'SET_WORKOUTS', payload: json })
+      } catch (error) {
+        console.error('Error fetching workouts:', error)
       }
     }
 
@@ -23,12 +28,8 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="workouts">
-        {workouts && workouts.map(workout => (
-          <WorkoutDetails workout={workout} key={workout._id} />
-        ))}
-      </div>
       <WorkoutForm />
+      <WorkoutsList />
     </div>
   )
 }
